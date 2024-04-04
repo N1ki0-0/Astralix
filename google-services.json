@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "468856825604",
+    "project_id": "astralix-database",
+    "storage_bucket": "astralix-database.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:468856825604:android:0f80faa18060038f7ad251",
+        "android_client_info": {
+          "package_name": "com.example.astralix"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0vZ2OXIX5WPEzD0B6j7nHRyU7irnV_RU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
