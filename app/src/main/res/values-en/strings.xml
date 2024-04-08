@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    <string name="app_name">Astralix</string>
+    <string name="authentication">Authentication</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="dont_have_account">Do not have an account?\nClick here to sign up</string>
+    <string name="name">Name</string>
+    <string name="already_have_account">Already have an account?\nClick here to login</string>
+    <string name="signup">Signup</string>
 </resources>

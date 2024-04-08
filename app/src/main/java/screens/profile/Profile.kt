@@ -1,12 +1,9 @@
 package com.example.astralix.screens.profile
 
-import android.graphics.drawable.Icon
-import android.widget.ImageButton
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -15,7 +12,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -28,20 +24,21 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.navigation.NavHostController
 import com.example.astralix.R
-import com.example.astralix.ui.theme.White
+import com.example.astralix.bottomBar.NavigationIteam
+import com.example.astralix.bottomBar.ROUTE_LOGIN
+import com.example.astralix.auth.AuthViewModel
 import com.example.astralix.ui.theme.Xoli
-import kotlin.contracts.contract
 
-@Preview
+
 @Composable
-fun Profile()
+fun Profile(viewModel: AuthViewModel?, navController: NavHostController)
 {
     Column (modifier = Modifier
         .fillMaxSize()
@@ -69,7 +66,7 @@ fun Profile()
                 .padding(start = 14.dp)
                 .weight(1f)
             ){
-                Text(text = "Скорик Никита",
+                Text(text = viewModel?.currentUser?.displayName ?:"",
                     color = Color.Black,
                     fontSize = 22.sp,
                     fontWeight = FontWeight.SemiBold
@@ -255,14 +252,18 @@ fun Profile()
                     fontWeight = FontWeight.SemiBold,
                 )
             }
-            IconButton(onClick = { /*TODO*/ }) {
-                Image(painter = painterResource(id = R.drawable.exit),
-                    null,
-                    modifier = Modifier
-                        .size(22.dp)
-                        .padding(end = 5.dp)
-                        .clickable {}
-                )}
+            Button(
+                onClick = {
+                    viewModel?.logout()
+                    navController.navigate(ROUTE_LOGIN) {
+                        popUpTo(NavigationIteam.Profile.route) { inclusive = true }
+                    }
+                },
+                modifier = Modifier
+                    .padding(top = 23.dp)
+            ) {
+                Text(text = stringResource(id = R.string.app_name))
+            }
         }
     }
 }
