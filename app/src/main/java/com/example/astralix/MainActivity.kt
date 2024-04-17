@@ -2,7 +2,9 @@ package com.example.astralix
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.compose.material.*
 import androidx.compose.material3.Text
@@ -19,14 +21,18 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.astralix.bottomBar.NavHostContainer
 import com.example.astralix.auth.AuthViewModel
+import com.example.astralix.data.GoogleAuthUIClient
+import com.google.android.gms.auth.api.identity.Identity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
     private val viewModel by viewModels<AuthViewModel>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,9 +47,12 @@ class MainActivity : ComponentActivity() {
                 content = { padding -> // We have to pass the scaffold inner padding to our content. That's why we use Box.
                     NavHostContainer(
                         viewModel,
+                        lifecycleScope,
+                        applicationContext,
                         isShowBottomBar = isShowBottomBar,
                         navController = navController,
-                        padding = padding)
+                        padding = padding
+                        )
                 },
                 backgroundColor = colorResource(R.color.white) // Set background color to avoid the white flashing when you switch between screens
             )

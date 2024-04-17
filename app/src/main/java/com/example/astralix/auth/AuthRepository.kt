@@ -1,5 +1,6 @@
 package com.example.astralix.auth
 
+import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseUser
 
 interface AuthRepository {

@@ -1,4 +1,4 @@
-package screens.mainscreen
+package screens.profile
 
 import android.content.res.Configuration
 import androidx.compose.foundation.Image

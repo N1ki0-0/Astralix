@@ -30,15 +30,20 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavHostController
+import coil.compose.AsyncImage
 import com.example.astralix.R
 import com.example.astralix.bottomBar.NavigationIteam
 import com.example.astralix.bottomBar.ROUTE_LOGIN
 import com.example.astralix.auth.AuthViewModel
+import com.example.astralix.data.UserData
 import com.example.astralix.ui.theme.Xoli
 
 
 @Composable
-fun Profile(viewModel: AuthViewModel?, navController: NavHostController)
+fun Profile(viewModel: AuthViewModel?,
+            navController: NavHostController,
+            userData: UserData?,
+            onSignOut: () -> Unit)
 {
     Column (modifier = Modifier
         .fillMaxSize()
@@ -55,22 +60,47 @@ fun Profile(viewModel: AuthViewModel?, navController: NavHostController)
                 modifier = Modifier.fillMaxHeight(),
                 verticalArrangement = Arrangement.Center
             ) {
+                if(userData?.profilePictureUrl != null){
+                    AsyncImage(model = userData.profilePictureUrl, null, modifier = Modifier
+                        .padding(end = 5.dp)
+                        .size(60.dp)
+                        .clip(CircleShape)
+                        .clickable {},
+                        contentScale = ContentScale.Crop)
+                }else{
                 Image(painter = painterResource(id = R.drawable.cat_), null, modifier = Modifier
                     .padding(end = 5.dp)
                     .size(60.dp)
                     .clip(CircleShape)
                     .clickable {},
                     contentScale = ContentScale.Crop)
+                }
             }
             Column (modifier = Modifier
                 .padding(start = 14.dp)
                 .weight(1f)
             ){
-                Text(text = viewModel?.currentUser?.displayName ?:"",
-                    color = Color.Black,
-                    fontSize = 22.sp,
-                    fontWeight = FontWeight.SemiBold
-                )
+                if(userData?.username != null){
+                    Text(text = userData.username,
+                        color = Color.Black,
+                        fontSize = 22.sp,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                }
+                else if(viewModel?.currentUser?.displayName != null){
+                    Text(text = viewModel?.currentUser?.displayName ?:"",
+                        color = Color.Black,
+                        fontSize = 22.sp,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                }
+                else{
+                    Text(text = "Name",
+                        color = Color.Black,
+                        fontSize = 22.sp,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                }
             }
             IconButton(onClick = { /*TODO*/ }) {
                 Image(painter = painterResource(id = R.drawable.menu_burger),
@@ -255,6 +285,7 @@ fun Profile(viewModel: AuthViewModel?, navController: NavHostController)
             Button(
                 onClick = {
                     viewModel?.logout()
+                    onSignOut
                     navController.navigate(ROUTE_LOGIN) {
                         popUpTo(NavigationIteam.Profile.route) { inclusive = true }
                     }
