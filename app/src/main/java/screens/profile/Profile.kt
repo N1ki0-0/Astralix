@@ -14,7 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,7 +24,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -34,8 +33,8 @@ import coil.compose.AsyncImage
 import com.example.astralix.R
 import com.example.astralix.bottomBar.NavigationIteam
 import com.example.astralix.bottomBar.ROUTE_LOGIN
-import com.example.astralix.auth.AuthViewModel
-import com.example.astralix.data.UserData
+import com.example.astralix.auth.authEmail.AuthViewModel
+import com.example.astralix.auth.authGoogle.UserData
 import com.example.astralix.ui.theme.Xoli
 
 
@@ -87,13 +86,6 @@ fun Profile(viewModel: AuthViewModel?,
                         fontWeight = FontWeight.SemiBold
                     )
                 }
-                else if(viewModel?.currentUser?.displayName != null){
-                    Text(text = viewModel?.currentUser?.displayName ?:"",
-                        color = Color.Black,
-                        fontSize = 22.sp,
-                        fontWeight = FontWeight.SemiBold
-                    )
-                }
                 else{
                     Text(text = "Name",
                         color = Color.Black,
@@ -107,7 +99,6 @@ fun Profile(viewModel: AuthViewModel?,
                     null,
                     modifier = Modifier
                         .padding(end = 5.dp)
-                        .clickable {}
                 )
             }
         }
@@ -124,12 +115,7 @@ fun Profile(viewModel: AuthViewModel?,
                 contentScale = ContentScale.Crop
                 )
 
-            Text(text = "112", color = Color.White, fontSize = 12.sp, modifier = Modifier
-                .constrainAs(textbonys){
-                    start.linkTo(parent.start,19.dp)
-                    top.linkTo(parent.top, 12.dp)
-                    bottom.linkTo(parent.bottom)
-                })
+
 
             Image(painterResource(id = R.drawable.gg), null, modifier = Modifier
                 .clickable {}
@@ -148,82 +134,81 @@ fun Profile(viewModel: AuthViewModel?,
         Row (
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = 16.dp, end = 16.dp, top = 8.dp)
+                .padding(start = 16.dp, end = 32.dp, top = 8.dp)
                 .height(45.dp),
             verticalAlignment = Alignment.CenterVertically
         ){
-            Column (modifier = Modifier
+            Row (modifier = Modifier
                 .padding(start = 17.dp)
-                .weight(1f),
+
             ){
                 Text(text = "мои покупки",
                     color = Color.Black,
                     fontSize = 22.sp,
                     fontWeight = FontWeight.Normal,
+                    modifier = Modifier.weight(1f)
                 )
-            }
-            IconButton(onClick = { /*TODO*/ }) {
+
                 Image(painter = painterResource(id = R.drawable.angle),
                     null,
                     modifier = Modifier
-                        .size(22.dp)
-                        .padding(end = 5.dp)
-                        .clickable {}
-                )}
+                        .size(18.dp)
+                )
+            }
         }
         // Избранное
         Row (
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = 16.dp, end = 16.dp, top = 8.dp)
-                .height(45.dp),
+                .padding(start = 16.dp, end = 32.dp, top = 8.dp)
+                .height(45.dp)
+                .clickable { navController.navigate(NavigationIteam.Favourites.route) },
             verticalAlignment = Alignment.CenterVertically
         ){
-            Column (modifier = Modifier
+            Row (modifier = Modifier
                 .padding(start = 17.dp)
-                .weight(1f),
+
             ){
                 Text(text = "избранное",
                     color = Color.Black,
                     fontSize = 22.sp,
                     fontWeight = FontWeight.Normal,
+                    modifier = Modifier.weight(1f)
                 )
-            }
-            IconButton(onClick = { /*TODO*/ }) {
+
                 Image(painter = painterResource(id = R.drawable.angle),
                     null,
                     modifier = Modifier
-                        .size(22.dp)
-                        .padding(end = 5.dp)
-                        .clickable {}
-                )}
+                        .size(18.dp)
+                )
+            }
+
         }
         // Документы
         Row (
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = 16.dp, end = 16.dp, top = 8.dp)
+                .padding(start = 16.dp, end = 32.dp, top = 8.dp)
                 .height(45.dp),
             verticalAlignment = Alignment.CenterVertically
         ){
-            Column (modifier = Modifier
+            Row (modifier = Modifier
                 .padding(start = 17.dp)
-                .weight(1f),
+
             ){
                 Text(text = "документы",
                     color = Color.Black,
                     fontSize = 22.sp,
                     fontWeight = FontWeight.Normal,
+                    modifier = Modifier.weight(1f)
                 )
-            }
-            IconButton(onClick = { /*TODO*/ }) {
+
                 Image(painter = painterResource(id = R.drawable.angle),
                     null,
                     modifier = Modifier
-                        .size(22.dp)
-                        .padding(end = 5.dp)
-                        .clickable {}
-                )}
+                        .size(18.dp)
+                )
+            }
         }
         // Поддержа
         Row (
@@ -242,7 +227,6 @@ fun Profile(viewModel: AuthViewModel?,
                         .padding(start = 16.dp, end = 5.dp)
                         .size(40.dp)
                         .clip(CircleShape)
-                        .clickable {},
                 )
             }
             Column(
@@ -282,19 +266,22 @@ fun Profile(viewModel: AuthViewModel?,
                     fontWeight = FontWeight.SemiBold,
                 )
             }
-            Button(
-                onClick = {
-                    viewModel?.logout()
+
+            IconButton(
+                onClick = { viewModel?.logout()
                     onSignOut
                     navController.navigate(ROUTE_LOGIN) {
                         popUpTo(NavigationIteam.Profile.route) { inclusive = true }
-                    }
-                },
-                modifier = Modifier
-                    .padding(top = 23.dp)
-            ) {
-                Text(text = stringResource(id = R.string.app_name))
-            }
+                    } }) {
+                Icon(painter = painterResource(id = R.drawable.exit),
+                    null,
+                    modifier = Modifier
+                        .size(22.dp)
+                        .padding(end = 5.dp)
+                )
+                }
+
+
         }
     }
 }

@@ -1,6 +1,5 @@
-package com.example.astralix.auth
+package com.example.astralix.auth.authEmail
 
-import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseUser
 
 interface AuthRepository {

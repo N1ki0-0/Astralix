@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Astralix</string>
-    <string name="authentication">Authentication</string>
+    <string name="authentication">Registration</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="login">Login</string>
@@ -10,4 +10,5 @@
     <string name="already_have_account">Already have an account?\nClick here to login</string>
     <string name="signup">Signup</string>
     <string name="wed_id">468856825604-c96e550j5f69ptr2n2cueq90ek9uk3ol.apps.googleusercontent.com</string>
+    <string name="par">парфюмерная вода</string>
 </resources>

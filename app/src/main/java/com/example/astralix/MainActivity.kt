@@ -2,9 +2,7 @@ package com.example.astralix
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.compose.material.*
 import androidx.compose.material3.Text
@@ -25,15 +23,17 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.astralix.bottomBar.NavHostContainer
-import com.example.astralix.auth.AuthViewModel
-import com.example.astralix.data.GoogleAuthUIClient
-import com.google.android.gms.auth.api.identity.Identity
+import com.example.astralix.auth.authEmail.AuthViewModel
+import com.example.astralix.products.ProductViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import screens.search.AddressViewModel
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     private val viewModel by viewModels<AuthViewModel>()
+    private val productViewModel by viewModels<ProductViewModel>()
+    private val addressViewModel by viewModels<AddressViewModel>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -47,6 +47,8 @@ class MainActivity : ComponentActivity() {
                 content = { padding -> // We have to pass the scaffold inner padding to our content. That's why we use Box.
                     NavHostContainer(
                         viewModel,
+                        productViewModel,
+                        addressViewModel,
                         lifecycleScope,
                         applicationContext,
                         isShowBottomBar = isShowBottomBar,
@@ -65,7 +67,7 @@ fun BottomNavigationBar(navController: NavController) {
     val items = listOf(
         NavigationIteam.Search,
         NavigationIteam.Favourites,
-        NavigationIteam.Home,
+//        NavigationIteam.Home,
         NavigationIteam.Profile,
         NavigationIteam.Basket
     )

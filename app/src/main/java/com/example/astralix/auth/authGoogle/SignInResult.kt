@@ -1,4 +1,4 @@
-package com.example.astralix.data
+package com.example.astralix.auth.authGoogle
 
 data class SignInResult(
     val data: UserData?,
@@ -10,3 +10,5 @@ data class UserData(
     val username: String?,
     val profilePictureUrl:String?
 )
+
+

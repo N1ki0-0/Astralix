@@ -13,27 +13,36 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.astralix.auth.AuthViewModel
-import com.example.astralix.data.GoogleAuthUIClient
+import com.example.astralix.auth.authEmail.AuthViewModel
+import com.example.astralix.auth.authGoogle.GoogleAuthUIClient
+import com.example.astralix.products.Address
+import com.example.astralix.products.ProductViewModel
+import com.example.astralix.products.Products
+import com.example.astralix.products.ProductsProfile
 import com.example.astralix.screens.basket.Basket
-import com.example.astralix.screens.mainscreen.MainScreen
 import com.example.astralix.screens.profile.Profile
 import com.example.astralix.screens.search.MainSearch
 import screens.profile.LoginScreen
 import screens.profile.SignupScreen
-import screens.profile.AuthenticationScreen
-import com.example.astralix.MainActivity
+import com.example.astralix.products.ProdustHome
+import com.example.astralix.screens.Favourites
 import com.google.android.gms.auth.api.identity.Identity
 import kotlinx.coroutines.launch
+import screens.search.AddAddressScreen
+import screens.search.AddressSelection
+import screens.search.AddressViewModel
 
 @Composable
-fun NavHostContainer(
+fun NavHostContainer (
     viewModel: AuthViewModel,
+    productsViewModel: ProductViewModel = hiltViewModel(),
+    addressViewModel: AddressViewModel = hiltViewModel(),
     lifecycleScope: LifecycleCoroutineScope,
     applicationContext: Context,
     navController: NavHostController,
@@ -47,21 +56,29 @@ fun NavHostContainer(
             oneTapClient = Identity.getSignInClient(applicationContext)
         )
     }
-
     val state by viewModel.state.collectAsStateWithLifecycle()
+
 
     NavHost(navController = navController,
         modifier = Modifier.padding(paddingValues = padding),
         startDestination = ROUTE_LOGIN,
         builder = {
-            composable(NavigationIteam.Home.route) {
-                MainScreen(navController)
-                isShowBottomBar.value = true
-            }
             composable(NavigationIteam.Search.route) {
-                MainSearch(navController)
+                MainSearch(navController = navController)
                 isShowBottomBar.value = true
             }
+
+            composable("addressSelection") {
+                AddressSelection(navController, addressViewModel)
+                isShowBottomBar.value = true
+            }
+            composable("addAddress") {
+                AddAddressScreen(addressViewModel) {
+                    navController.popBackStack()
+                }
+                isShowBottomBar.value = true
+            }
+
             composable(NavigationIteam.Basket.route) {
                 Basket(navController)
                 isShowBottomBar.value = true
@@ -84,9 +101,35 @@ fun NavHostContainer(
                 isShowBottomBar.value = true
             }
             composable(NavigationIteam.Favourites.route) {
-                AuthenticationScreen()
+                Favourites(navController)
+            }
+
+            composable("$ProductProfile/{productId}") { backStackEntry ->
+                val productId = backStackEntry.arguments?.getString("productId")?.toIntOrNull()
+                if (productId != null) {
+                    val product = productsViewModel.getProductById(productId)
+                    product?.let {
+                        ProductsProfile(it)
+                    } ?: run {
+                        // Обработка случая, когда продукт не найден
+                        navController.popBackStack()
+                        Toast.makeText(applicationContext, "Product not found", Toast.LENGTH_SHORT).show()
+                    }
+                } else {
+                    // Обработка случая, когда productId является null
+                    navController.popBackStack()
+                    Toast.makeText(applicationContext, "Invalid product ID", Toast.LENGTH_SHORT).show()
+                }
                 isShowBottomBar.value = true
             }
+            composable("productCategory/{category}") { backStackEntry ->
+                val category = backStackEntry.arguments?.getString("category") ?: ""
+                ProdustHome(productsViewModel, category) { listItem ->
+                    navController.navigate("$ProductProfile/${listItem.id}")
+                }
+                isShowBottomBar.value = true
+            }
+
             //Аунтификация(Вход в профиль)
             composable(ROUTE_LOGIN) {
                 LaunchedEffect(key1 = Unit){

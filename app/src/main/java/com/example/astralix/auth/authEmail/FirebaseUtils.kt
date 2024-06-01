@@ -1,4 +1,4 @@
-package com.example.astralix.auth
+package com.example.astralix.auth.authEmail
 
 import com.google.android.gms.tasks.Task
 import kotlinx.coroutines.suspendCancellableCoroutine

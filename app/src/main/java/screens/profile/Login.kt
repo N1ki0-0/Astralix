@@ -5,10 +5,8 @@ import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.IconButton
@@ -40,20 +38,15 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.example.astralix.R
 import com.example.astralix.bottomBar.NavigationIteam
 import com.example.astralix.bottomBar.ROUTE_LOGIN
 import com.example.astralix.bottomBar.ROUTE_SIGNUP
-import com.example.astralix.auth.AuthViewModel
-import com.example.astralix.auth.Resource
-import com.example.astralix.data.UserData
+import com.example.astralix.auth.authEmail.AuthViewModel
+import com.example.astralix.auth.authEmail.Resource
 import com.example.astralix.ui.theme.Xoli
 import com.example.astralix.ui.theme.spacing
-import com.google.android.gms.auth.api.identity.Identity
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.plcoding.composegooglesignincleanarchitecture.presentation.sign_in.SignInState
-import okhttp3.internal.applyConnectionSpec
 
 @Composable
 fun LoginScreen(
@@ -66,6 +59,7 @@ fun LoginScreen(
     var password by remember { mutableStateOf("") }
 
     val loginFlow = viewModel?.loginFlow?.collectAsState()
+
     ConstraintLayout(
         modifier = Modifier
             .fillMaxSize()
@@ -190,12 +184,13 @@ fun LoginScreen(
                     Toast.makeText(context, it.exception.message, Toast.LENGTH_LONG).show()
                 }
                 Resource.Loading -> {
-                    CircularProgressIndicator(modifier = Modifier.constrainAs(refLoader){
-                        top.linkTo(parent.bottom)
+                    Box(modifier = Modifier.fillMaxSize().constrainAs(refLoader){
+                        top.linkTo(parent.top)
                         bottom.linkTo(parent.bottom)
                         start.linkTo(parent.start)
-                        end.linkTo(parent.end)
-                    })
+                        end.linkTo(parent.end)}){
+                        CircularProgressIndicator()
+                    }
                 }
                 is Resource.Success -> {
                     LaunchedEffect(Unit) {
