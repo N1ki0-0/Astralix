@@ -2,6 +2,7 @@ package com.example.astralix.bottomBar
 
 import android.app.Activity.RESULT_OK
 import android.content.Context
+import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.IntentSenderRequest
@@ -11,8 +12,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -22,6 +25,8 @@ import androidx.navigation.compose.composable
 import com.example.astralix.auth.authEmail.AuthViewModel
 import com.example.astralix.auth.authGoogle.GoogleAuthUIClient
 import com.example.astralix.products.Address
+import com.example.astralix.products.LoadingScreen
+import com.example.astralix.products.ProductLoaderScreen
 import com.example.astralix.products.ProductViewModel
 import com.example.astralix.products.Products
 import com.example.astralix.products.ProductsProfile
@@ -34,9 +39,12 @@ import com.example.astralix.products.ProdustHome
 import com.example.astralix.screens.Favourites
 import com.google.android.gms.auth.api.identity.Identity
 import kotlinx.coroutines.launch
+import screens.SplashScreen
+import screens.profile.Document
 import screens.search.AddAddressScreen
 import screens.search.AddressSelection
 import screens.search.AddressViewModel
+import screens.search.SearchScreen
 
 @Composable
 fun NavHostContainer (
@@ -61,8 +69,12 @@ fun NavHostContainer (
 
     NavHost(navController = navController,
         modifier = Modifier.padding(paddingValues = padding),
-        startDestination = ROUTE_LOGIN,
+        startDestination = Splash,
         builder = {
+            composable(Splash){
+                SplashScreen(navController)
+                isShowBottomBar.value = false
+            }
             composable(NavigationIteam.Search.route) {
                 MainSearch(navController = navController)
                 isShowBottomBar.value = true
@@ -78,6 +90,11 @@ fun NavHostContainer (
                 }
                 isShowBottomBar.value = true
             }
+
+            composable(SearchScreen) {
+                SearchScreen(navController)
+            }
+
 
             composable(NavigationIteam.Basket.route) {
                 Basket(navController)
@@ -107,16 +124,8 @@ fun NavHostContainer (
             composable("$ProductProfile/{productId}") { backStackEntry ->
                 val productId = backStackEntry.arguments?.getString("productId")?.toIntOrNull()
                 if (productId != null) {
-                    val product = productsViewModel.getProductById(productId)
-                    product?.let {
-                        ProductsProfile(it)
-                    } ?: run {
-                        // Обработка случая, когда продукт не найден
-                        navController.popBackStack()
-                        Toast.makeText(applicationContext, "Product not found", Toast.LENGTH_SHORT).show()
-                    }
+                    ProductLoaderScreen(productId, navController, productsViewModel)
                 } else {
-                    // Обработка случая, когда productId является null
                     navController.popBackStack()
                     Toast.makeText(applicationContext, "Invalid product ID", Toast.LENGTH_SHORT).show()
                 }
@@ -182,5 +191,11 @@ fun NavHostContainer (
                 SignupScreen(viewModel, navController)
                 isShowBottomBar.value = false
             }
-        })
+            composable(Document) {
+                Document()
+                isShowBottomBar.value = true
+            }
+        }
+    )
+
 }

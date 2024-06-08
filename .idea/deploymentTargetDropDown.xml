@@ -5,8 +5,27 @@
       <entry key="BottomNavigationBarPreview">
         <State />
       </entry>
+      <entry key="ExampleUnitTest">
+        <State />
+      </entry>
       <entry key="LoginScreenPreviewLight">
         <State />
+      </entry>
+      <entry key="UnifiedTest">
+        <State>
+          <targetSelectedWithDropDown>
+            <Target>
+              <type value="QUICK_BOOT_TARGET" />
+              <deviceKey>
+                <Key>
+                  <type value="VIRTUAL_DEVICE_PATH" />
+                  <value value="C:\Users\skori\.android\avd\Pixel_7_Pro_API_34.avd" />
+                </Key>
+              </deviceKey>
+            </Target>
+          </targetSelectedWithDropDown>
+          <timeTargetWasSelectedWithDropDown value="2024-06-07T22:35:57.927791700Z" />
+        </State>
       </entry>
       <entry key="app">
         <State>
@@ -21,7 +40,7 @@
               </deviceKey>
             </Target>
           </targetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2024-05-31T20:47:17.304648600Z" />
+          <timeTargetWasSelectedWithDropDown value="2024-06-07T22:48:09.738866700Z" />
           <targetsSelectedWithDialog>
             <Target>
               <type value="QUICK_BOOT_TARGET" />

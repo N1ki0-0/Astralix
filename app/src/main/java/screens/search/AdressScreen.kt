@@ -19,7 +19,6 @@ import com.example.astralix.products.Address
 fun AddressSelection(navController: NavHostController, addressViewModel: AddressViewModel) {
     val addresses by addressViewModel.addresses.collectAsState()
     val selectedAddress = remember { mutableStateOf(Address(street = "qwe", city = "Москва", house = "", flat = "")) }
-
     Column(modifier = Modifier.fillMaxSize()) {
         Text(
             text = "Адрес доставки",

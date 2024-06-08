@@ -20,11 +20,7 @@ class AuthRepositoryImpl @Inject constructor(
             Resource.Failure(e)
         }
     }
-
-    override suspend fun signup(
-        name: String,
-        email: String,
-        password: String
+    override suspend fun signup(name: String, email: String, password: String
     ): Resource<FirebaseUser> {
         return try {
             val result = firebaseAuth.createUserWithEmailAndPassword(email, password).await()
@@ -35,7 +31,6 @@ class AuthRepositoryImpl @Inject constructor(
             Resource.Failure(e)
         }
     }
-
     override fun logout() {
         firebaseAuth.signOut()
     }

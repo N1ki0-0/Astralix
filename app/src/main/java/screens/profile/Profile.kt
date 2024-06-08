@@ -35,6 +35,7 @@ import com.example.astralix.bottomBar.NavigationIteam
 import com.example.astralix.bottomBar.ROUTE_LOGIN
 import com.example.astralix.auth.authEmail.AuthViewModel
 import com.example.astralix.auth.authGoogle.UserData
+import com.example.astralix.bottomBar.Document
 import com.example.astralix.ui.theme.Xoli
 
 
@@ -135,14 +136,15 @@ fun Profile(viewModel: AuthViewModel?,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(start = 16.dp, end = 32.dp, top = 8.dp)
-                .height(45.dp),
+                .height(45.dp)
+                .clickable{navController.navigate(NavigationIteam.Basket.route)},
             verticalAlignment = Alignment.CenterVertically
         ){
             Row (modifier = Modifier
                 .padding(start = 17.dp)
 
             ){
-                Text(text = "мои покупки",
+                Text(text = "моя корзина",
                     color = Color.Black,
                     fontSize = 22.sp,
                     fontWeight = FontWeight.Normal,
@@ -189,7 +191,8 @@ fun Profile(viewModel: AuthViewModel?,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(start = 16.dp, end = 32.dp, top = 8.dp)
-                .height(45.dp),
+                .height(45.dp)
+                .clickable{navController.navigate(Document)},
             verticalAlignment = Alignment.CenterVertically
         ){
             Row (modifier = Modifier

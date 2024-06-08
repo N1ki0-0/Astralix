@@ -3,6 +3,7 @@ package com.example.astralix.screens.search
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -11,8 +12,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
+import com.example.astralix.bottomBar.SearchScreen
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
@@ -60,25 +62,22 @@ fun MainSearch(
     Column(modifier = Modifier
         .fillMaxSize()
         .background(Xoli)) {
-        TextField(
-            value = "",
-            onValueChange = {},
+        Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(Color.Gray.copy(alpha = 0.1f), RoundedCornerShape(8.dp)),
-            placeholder = { Text("ПОИСК") },
-            leadingIcon = { Icon(Icons.Default.Search, contentDescription = "Search") },
-            trailingIcon = {
-                IconButton(onClick = { /* handle QR code action */ }) {
-                    Icon(Icons.Default.QrCode, contentDescription = "QR Code")
+                .padding(16.dp)
+                .background(Color.Gray.copy(alpha = 0.1f), RoundedCornerShape(8.dp))
+                .clickable {
+                    navController.navigate(SearchScreen)
                 }
-            },
-            colors = TextFieldDefaults.textFieldColors(
-                backgroundColor = Color.Transparent,
-                focusedIndicatorColor = Color.Transparent,
-                unfocusedIndicatorColor = Color.Transparent
-            )
-        )
+                .padding(16.dp)
+        ) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(Icons.Default.Search, contentDescription = "Search")
+                Spacer(modifier = Modifier.width(8.dp))
+                Text("ПОИСК", color = Color.Gray)
+            }
+        }
 
         Spacer(modifier = Modifier.height(16.dp))
         TextButton(onClick = { navController.navigate("addressSelection")}) {

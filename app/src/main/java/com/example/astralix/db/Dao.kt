@@ -16,10 +16,19 @@ interface Dao {
     suspend fun insertItem(item: Products)
     @Delete
     suspend fun deleteItem(item: Products)
+
     @Query("SELECT * FROM productItem WHERE category LIKE :cat")
     fun getAllItemsByCategory(cat: String): Flow<List<Products>>
     @Query("SELECT * FROM productItem WHERE isFav = 1")
     fun getFavorites(): Flow<List<Products>>
+
+    @Query("SELECT * FROM productItem WHERE isBas = 1")
+    fun getBasket(): Flow<List<Products>>
+
+    @Query("UPDATE productItem SET isBas = 0 WHERE isBas = 1")
+    suspend fun clearBasket()
+    @Query("SELECT * FROM productItem WHERE id = :id")
+    suspend fun getProductById(id: Int): Products?
     @Query("SELECT * FROM productItem WHERE title LIKE '%' || :searchQuery || '%'")
     fun searchItemsByTitle(searchQuery: String): Flow<List<Products>>
 }

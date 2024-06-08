@@ -33,6 +33,7 @@ object AppModule {
         return app.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
     }
 
+
     @Provides
     @Singleton
     fun provideMainDb(app: Application): MainDb{
